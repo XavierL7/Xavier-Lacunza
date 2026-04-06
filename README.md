@@ -29,5 +29,8 @@ el universo de jojos. También jugadores de Eyes of Heaven o All Star Battle R.
 Criterio de calidad aplicado: busco agregar el estilo de jojos a mi pagina con animaciones interesantes pero que no saturen al usuario.
 tambien quiero intentar que sea una pagina que cargue decentemente rapido y no haga esperar al usuario
 
+# Proyecto de N8N
+
+Ocupe un docker para correr en el N8N en el y subierlo a una pagina con HTTPS con Ngrok, mi Workflow de N8N recibe la informacion de un formulario de queja de mi pagina de Formulario de Quejas (index.html) y lee la informacion, la pasa a un Google Sheet y me envia un aviso por Gmail.
 
 
