@@ -1,0 +1,208 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "quejas",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7bab2655-5243-4c75-9cf0-e91c51358ff0",
+      "name": "Webhook",
+      "webhookId": "2d41b804-b91d-471b-82c7-c4001092f2ca"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"ok\",\n  \"mensaje\": \"Queja recibida correctamente\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        624,
+        0
+      ],
+      "id": "479639e2-aa01-4ca1-b83b-24ed7f90ad5d",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1JIaQFqmTzq1subeTq-yCdD7Sgr8LGlNhd8y5PvWa1DY/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Registro de Quejas",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Fecha": "={{ new Date().toLocaleString() }}",
+            "Nombre": "={{$json.body.nombre}}",
+            "Email": "={{$json.body.email}}",
+            "Mensaje": "={{$json.body.mensaje}}",
+            "Tipo": "={{$json.body.tipo}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Fecha",
+              "displayName": "Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nombre",
+              "displayName": "Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tipo",
+              "displayName": "Tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b696f78e-117f-4e4c-bb11-2c309a71777d",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ALLsM4wyFwUsHdvD",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "xavierjeje11@gmail.com",
+        "subject": "Nueva queja recibida",
+        "message": "=Se recibió una nueva queja:\n\nNombre: {{$json.Nombre}}\nEmail: {{$json.Email}}\nTipo: {{$json.Tipo}}\nMensaje: {{$json.Mensaje}}\nFecha: {{$json.Fecha}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "f9660831-f3c8-42a5-a44f-2bfefcff404e",
+      "name": "Send a message",
+      "webhookId": "183bdac7-bf82-497f-82db-b863bd4a15af",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yB0W2w7mvT3Neiry",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "46040e17-9c93-4ba0-b38b-dd3df2eba124",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3d070bf2f57868e1bf200bd009cd3fa7cb92588d0d992ea754ccdcd0b03df493"
+  },
+  "id": "6r7oJjZxcz8u2LEG",
+  "tags": []
+}
