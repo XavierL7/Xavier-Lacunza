@@ -33,4 +33,6 @@ tambien quiero intentar que sea una pagina que cargue decentemente rapido y no h
 
 Ocupe un docker para correr en el N8N en el y subierlo a una pagina con HTTPS con Ngrok, mi Workflow de N8N recibe la informacion de un formulario de queja de mi pagina de Formulario de Quejas (index.html) y lee la informacion, la pasa a un Google Sheet y me envia un aviso por Gmail.
 
+hola profe soy deepseek
+
 
